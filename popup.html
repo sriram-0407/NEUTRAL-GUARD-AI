@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body class="home-state">
+    <div class="container">
+        <header class="header" id="main-header">
+            <div class="header-titles">
+                <div class="main-title">NEUTRAL GUARD <span class="accent-text">AI</span></div>
+                <div class="status-badge" id="header-status"><span class="status-dot">●</span> <span id="header-status-text">READY TO SCAN</span></div>
+            </div>
+            <button id="openSettings" class="settings-btn" title="Settings">⚙</button>
+        </header>
+
+        <!-- Home View -->
+        <div id="home-view" class="view-section">
+            <div class="home-graphic">
+                <div class="pulse-ring"></div>
+                <div class="shield-emoji">🛡️</div>
+            </div>
+            <div class="home-desc">
+                <span class="home-desc-title">Site Security Assessor</span>
+                <span class="home-desc-text">
+                    Run an AI-powered deep forensic scan to check for clickjacking, domain age anomalies, and malicious links.
+                </span>
+            </div>
+            <button id="start-scan-btn" class="start-btn">
+                START SCANNING
+            </button>
+        </div>
+
+        <!-- Loading View -->
+        <div id="loading-view" class="loading-container" style="display: none;">
+            <div class="spinner"></div>
+            <div class="loading-text">ANALYZING PAGE...</div>
+            <div class="loading-subtext">Checking security parameters</div>
+            <button id="stop-scan-btn" class="secondary-btn" style="margin-top: 45px; border-color: #ff004c; color: #ff004c; width: 60%;">STOP ANALYZING</button>
+        </div>
+
+        <!-- Result View -->
+        <div id="result-view" style="display: none;">
+
+        <div class="risk-section">
+            <svg viewBox="0 0 100 130" class="shield-svg">
+                <path class="bg" d="M 50 10 L 85 25 L 85 70 C 85 95 60 115 50 120 C 40 115 15 95 15 70 L 15 25 Z"/>
+                <path id="riskRing" class="meter" pathLength="100" stroke-dasharray="0, 100" d="M 50 10 L 85 25 L 85 70 C 85 95 60 115 50 120 C 40 115 15 95 15 70 L 15 25 Z"/>
+            </svg>
+            <div class="score-container">
+                <span id="scoreNum">0</span>
+                <label>RISK</label>
+            </div>
+        </div>
+
+        <div id="banner" class="banner">SITE VERIFIED SAFE</div>
+
+        <div class="grid">
+            <div class="box"><label>Domain</label><span id="age-val">Trusted</span></div>
+            <div class="box"><label>Blacklist</label><span id="black-val">Clear</span></div>
+            <div class="box"><label>SSL</label><span id="ssl-val">Checking</span></div>
+            <div class="box"><label>Identity</label><span id="id-val">Match</span></div>
+        </div>
+
+       <div class="action-container">
+    <div class="box full-width">
+        <button id="secure-btn" class="action-btn">SECURE SESSION</button>
+        <button id="history-btn" class="secondary-btn">VIEW HISTORY</button>
+        <button id="advanced-analysis-btn" class="secondary-btn">ADVANCED ANALYSIS</button>
+        
+        <!-- Advanced Analysis Section -->
+        <div id="forensic-drawer" class="drawer">
+            <div class="drawer-header">
+                <span>ADVANCED ANALYSIS</span>
+                <button id="close-drawer" class="close-btn">&times;</button>
+            </div>
+            <div class="drawer-content">
+                <ul id="reasons-list">
+                    <!-- Reasons will be injected here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+        </div> <!-- End action-container -->
+        </div> <!-- End result-view -->
+    </div> <!-- End container -->
+    
+    <!-- Full Screen Settings Overlay -->
+    <div id="settings-overlay" class="full-overlay">
+        <div class="overlay-header">
+            <button id="close-settings-overlay" class="back-btn">&larr;</button>
+            <span>SETTINGS</span>
+        </div>
+        <div class="overlay-content config-list">
+            
+            <div class="config-card">
+                <div class="config-icon" style="color: #00ff88; box-shadow: 0 0 10px rgba(0,255,136,0.3);">🛡️</div>
+                <div class="config-details">
+                    <span class="config-title">Auto-Protect</span>
+                    <span class="config-desc">Block navigation to high-risk sites</span>
+                </div>
+                <label class="cyber-switch">
+                    <input type="checkbox" id="popupAutoProtect" checked>
+                    <span class="cyber-slider"></span>
+                </label>
+            </div>
+
+            <div class="config-card">
+                <div class="config-icon" style="color: #00bfff; box-shadow: 0 0 10px rgba(0,191,255,0.3);">🔔</div>
+                <div class="config-details">
+                    <span class="config-title">Notifications</span>
+                    <span class="config-desc">Push alerts for intercepted threats</span>
+                </div>
+                <label class="cyber-switch">
+                    <input type="checkbox" id="popupNotifications" checked>
+                    <span class="cyber-slider"></span>
+                </label>
+            </div>
+
+            <div class="config-section-title">ADVANCED SECURITY FILTERS</div>
+
+            <div class="config-card">
+                <div class="config-icon" style="color: #ff9500; box-shadow: 0 0 10px rgba(255,149,0,0.3);">🕸️</div>
+                <div class="config-details">
+                    <span class="config-title">Clickjacking Protection</span>
+                    <span class="config-desc">Detect hidden invisible buttons on websites</span>
+                </div>
+                <label class="cyber-switch">
+                    <input type="checkbox" id="popupCheckClickjacking" checked>
+                    <span class="cyber-slider"></span>
+                </label>
+            </div>
+
+            <div class="config-card">
+                <div class="config-icon" style="color: #dd00ff; box-shadow: 0 0 10px rgba(221,0,255,0.3);">⏳</div>
+                <div class="config-details">
+                    <span class="config-title">Domain Age Analysis</span>
+                    <span class="config-desc">Warn if the website was created very recently</span>
+                </div>
+                <label class="cyber-switch">
+                    <input type="checkbox" id="popupCheckDomainAge" checked>
+                    <span class="cyber-slider"></span>
+                </label>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <button class="secondary-btn glow-btn" id="openAnalyticsBtn" style="width: 100%;">ADVANCED ANALYTICS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Analytics Chart Overlay -->
+    <div id="analytics-overlay" class="full-overlay">
+        <div class="overlay-header">
+            <button id="close-analytics-overlay" class="back-btn">&larr;</button>
+            <span>ADVANCED SETTINGS</span>
+        </div>
+        <div class="overlay-content">
+            <div class="chart-title">WEEKLY FLOW CHART (LAST 7 DAYS)</div>
+            
+            <div class="chart-container" id="chartContainer">
+                <!-- Bars injected via JS -->
+            </div>
+            
+            <div class="chart-legend">
+                <div class="legend-item"><div class="legend-color" style="background: #00ff88;"></div>Safe</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ff9500;"></div>Caution</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ff004c;"></div>Danger</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Scans</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                </div>
+                <div class="stat-box" style="border-color: #ff004c; background: rgba(255,0,76,0.05);">
+                    <div class="stat-label">Risky Sites</div>
+                    <div class="stat-value" style="color:#ff004c;" id="stat-risky">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
